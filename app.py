@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import plotly_express as px
 import datetime
-import time
 
 # Titulo de proyecto
 st.header(
