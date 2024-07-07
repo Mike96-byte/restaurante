@@ -54,6 +54,7 @@ df_rest["dia"] = df_rest["fecha"].dt.day
 df_rest["hora"] = df_rest["hora_de_cobro"].apply(
     lambda x: x.hour if isinstance(x, datetime.time) else None)
 df_rest["propina_total"] = df_rest["propina"]*df_rest["precio"]
+df_rest["dia_semana"] = df_rest["fecha"].dt.weekday
 
 
 st.title("Analisis Exploratorio para Datos de un Restaurante")
@@ -211,3 +212,12 @@ venta_dia = df_rest.groupby(["hora", "categoria"])[
 fig15 = px.density_heatmap(venta_dia, x="hora", y="categoria",
                            text_auto=True, z="venta_total", color_continuous_scale="RdBu", color_continuous_midpoint=1000)
 st.plotly_chart(fig15)
+
+# Diagrama de cajas para el ticket promedio por día de la semana.
+
+venta_dia_semana = df_rest.groupby(["dia_semana", "orden"])[
+    "venta_total"].sum().reset_index()
+
+fig16 = px.box(data_frame=venta_dia_semana, x="dia_semana",
+               y="venta_total")
+st.plotly_chart(fig16, use_container_width=True)
