@@ -9,13 +9,6 @@ st.header(
     "*_Proyecto de Restaurantes para analisis de sus ventas_* :fork_and_knife: :wine_glass:", divider="violet")
 
 
-def stream_data():
-    """Nos ayudara a poner los textos para cada sección"""
-    for word in texto.split(" "):
-        yield word + " "
-        time.sleep(0.02)
-
-
 # Primero vamos a leer los archivos y combinarlos.
 
 # Leer los archivos
@@ -70,12 +63,8 @@ df_rest["dia_semana"] = df_rest["fecha"].dt.weekday
 
 # Empezamos con el analisis de los datos
 
-texto = """En esta ocasión vamos a hacer un primer analisis exploratorio para un local de restaurante, vamos a analizar sus ventas por día, por hora,
-sus propinas, cuales son los productos que más se venden, las categorias y las horas con más ventas. Todo esto con ayuda de los graficos."""
+st.markdown("*_En esta ocasión vamos a hacer un primer analisis exploratorio para un local de restaurante, vamos a analizar sus ventas por día, por hora, sus propinas, cuales son los productos que más se venden, las categorias y las horas con más ventas. Todo esto con ayuda de los graficos._*")
 
-# Boton para poner el texto.
-if st.button("Objetivo"):
-    st.write_stream(stream_data)
 
 # Titulo principal para el analisis
 st.header("Analisis Exploratorio para Datos de un Restaurante", divider="blue")
