@@ -16,7 +16,7 @@ restaurants = pd.read_excel("datos_restaurante.xlsx", sheet_name="Datos")
 precios = pd.read_csv("precios_restaurant.csv")
 
 # Combinar los archivos
-df_rest = pd.merge(restaurants, precios, on="Producto", how="outer")
+df_rest = pd.merge(restaurants, precios, on="Producto", how="left")
 
 # cambiar a minusculas las letras y cambiar los espacios por guines bajos.
 new_names = []
@@ -148,7 +148,7 @@ categorias = df_rest.groupby(["categoria", "tipo_x", "tipo_y", "atendió"])[
 meseros = df_rest["atendió"].unique()
 
 fig5 = px.bar(categorias, x="tipo_y", y="tipo_de_cliente",
-              title="Categorias más vendidas", color="categoria")
+              title="Categorias más vendidas", color="categoria", labels={"tipo_y": "Categorias", "tipo_de_cliente": "Conteo total"})
 st.plotly_chart(fig5, use_container_width=True)
 
 meseros_categoria = df_rest.groupby(["atendió", "categoria", "tipo_x"])[
@@ -175,7 +175,7 @@ st.plotly_chart(fig17)
 st.title("Vamos a hacer otro analisis exploratorio con graficas de barras")
 
 # Grafico de barras para venta de productos
-st.title("Venta por producto para los mejores 20 productos")
+st.header("Venta por producto para los mejores 20 productos")
 venta_producto = df_rest.groupby(
     "producto")["venta_total"].sum().nlargest(20).reset_index()
 fig10 = plt.figure(figsize=(10, 6))
@@ -183,6 +183,8 @@ fig10 = plt.figure(figsize=(10, 6))
 plt.bar(venta_producto["producto"], venta_producto["venta_total"])
 labels = venta_producto["producto"].unique()
 plt.xticks(venta_producto["producto"], labels, rotation="vertical")
+plt.xlabel("Productos")
+plt.ylabel("Ventas Totales")
 st.pyplot(fig10)
 
 # Venta por tipo de alimentos
@@ -197,6 +199,9 @@ fig11 = plt.figure(figsize=(10, 8))
 plt.bar(venta_tipo["tipo_y"], venta_tipo["venta_total"])
 label11 = venta_tipo["tipo_y"]
 plt.xticks(venta_tipo["tipo_y"], label11, rotation="vertical")
+plt.xlabel("Categorias")
+plt.ylabel("Ventas Totales")
+plt.title("Ventas totales por categorias")
 st.pyplot(fig11)
 
 # Agrupación de datos por ventas por días
@@ -243,9 +248,11 @@ st.plotly_chart(fig15)
 
 # Diagrama de cajas para el ticket promedio por día de la semana.
 
+
+st.header("Diagrama de caja para ventas por día de la semana")
 venta_dia_semana = df_rest.groupby(["dia_semana", "orden"])[
     "venta_total"].sum().reset_index()
 
 fig16 = px.box(data_frame=venta_dia_semana, x="dia_semana",
-               y="venta_total")
+               y="venta_total", title="Diagrama de caja para ventas", labels={"dia_semana": "Dia de la semana", "venta_total": "Ventas totales"})
 st.plotly_chart(fig16, use_container_width=True)
